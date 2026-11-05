@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Users } from 'lucide-react';
 import { toast } from 'sonner';
 import api, { getErrorMessage } from '@/services/api';
 import { invalidateWorkspace } from '@/hooks/useCrm';
@@ -141,7 +140,9 @@ export default function Leads() {
               pageRows.forEach((row) => (allOn ? next.delete(row._id) : next.add(row._id)));
               setSelected(next);
             }}
-            empty={<div className="rounded-xl border border-line bg-surface"><EmptyState icon={Users} title="No leads yet" description="Add your first lead." action={<Button onClick={() => setLeadForm(true)}>New lead</Button>} /></div>}
+            empty={filters.search || filters.stage || filters.source
+              ? <div className="rounded-xl border border-line bg-surface"><EmptyState scene="search" title="No leads match" description="Try another name, company, stage, or source." /></div>
+              : <div className="rounded-xl border border-line bg-surface"><EmptyState scene="leads" title="No leads yet" description="Add your first lead." action={<Button onClick={() => setLeadForm(true)}>New lead</Button>} /></div>}
           />
           <Pagination
             page={query.data.page}

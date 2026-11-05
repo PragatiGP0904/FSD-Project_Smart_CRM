@@ -46,7 +46,7 @@ export default function Activities() {
       {query.isError ? <ErrorState message="Activities could not be loaded." onRetry={() => query.refetch()} /> : null}
       {query.data && !query.data.length ? (
         <div className="rounded-xl border border-line bg-surface">
-          <EmptyState title="No interactions yet" description="Log a call, meeting, email, or note." action={<Button onClick={() => setOpen(true)}>Log activity</Button>} />
+          <EmptyState scene={filters.type ? 'search' : 'activity'} title={filters.type ? 'No interactions of this type' : 'No interactions yet'} description={filters.type ? 'Try another type, or log one.' : 'Log a call, meeting, email, or note.'} action={<Button onClick={() => setOpen(true)}>Log activity</Button>} />
         </div>
       ) : null}
       <div className="space-y-6">

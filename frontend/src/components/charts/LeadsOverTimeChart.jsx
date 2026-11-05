@@ -9,7 +9,7 @@ export function LeadsOverTimeChart({ points }) {
   }));
   const total = data.reduce((sum, item) => sum + item.count, 0);
   if (!total) {
-    return <EmptyState title="No leads in the last 8 weeks" description="New leads will appear here week by week." />;
+    return <EmptyState scene="chart" compact title="No leads in the last 8 weeks" description="New leads will appear here week by week." />;
   }
   return (
     <div className="h-64">

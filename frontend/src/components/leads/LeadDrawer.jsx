@@ -10,6 +10,7 @@ import { Sheet } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Tooltip } from '@/components/ui/tooltip';
 import { StageChip } from '@/components/common/StageChip';
+import { Avatar } from '@/components/common/Avatar';
 import { ContextFollowUpCard } from '@/components/followups/ContextFollowUpCard';
 import { EmptyState } from '@/components/common/EmptyState';
 
@@ -45,7 +46,13 @@ export function LeadDrawer({ leadId, open, onOpenChange, onLog, onFollowUp, onCo
   };
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange} title={lead?.name || 'Lead'} description={lead?.company || 'Lead details'}>
+    <Sheet
+      open={open}
+      onOpenChange={onOpenChange}
+      title={lead?.name || 'Lead'}
+      description={lead?.company || 'Lead details'}
+      media={lead ? <Avatar name={lead.name} size={44} /> : null}
+    >
       {leadQuery.isLoading ? <p className="text-sm text-muted">Loading lead</p> : null}
       {lead ? (
         <div className="space-y-5">
@@ -112,7 +119,7 @@ export function LeadDrawer({ leadId, open, onOpenChange, onLog, onFollowUp, onCo
                 ))}
               </ol>
             ) : (
-              <EmptyState title="No interactions yet" description="Record the first conversation before moving this lead to Contacted." />
+              <EmptyState scene="activity" title="No interactions yet" description="Record the first conversation before moving this lead to Contacted." />
             )}
           </section>
           <section className="space-y-3">

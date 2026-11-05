@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Contact } from 'lucide-react';
 import api from '@/services/api';
 import { useDebounce, useStoredState } from '@/hooks/useUi';
 import { useDocumentMeta } from '@/context/PageMetaContext';
@@ -72,7 +71,9 @@ export default function Customers() {
             columns={columns}
             rows={query.data.data}
             onRowClick={(row) => navigate(`/customers/${row._id}`)}
-            empty={<div className="rounded-xl border border-line bg-surface"><EmptyState icon={Contact} title="No customers yet" description="Won leads become customers, or you can add one directly." action={<Button onClick={() => setOpen(true)}>New customer</Button>} /></div>}
+            empty={filters.search || filters.status
+              ? <div className="rounded-xl border border-line bg-surface"><EmptyState scene="search" title="No customers match" description="Try another name, company, or status." /></div>
+              : <div className="rounded-xl border border-line bg-surface"><EmptyState scene="customers" title="No customers yet" description="Won leads become customers, or you can add one directly." action={<Button onClick={() => setOpen(true)}>New customer</Button>} /></div>}
           />
           <Pagination page={query.data.page} pages={query.data.pages} count={query.data.count} limit={filters.limit} onPage={(page) => setFilters({ ...filters, page })} onLimit={(limit) => setFilters({ ...filters, limit, page: 1 })} />
         </>

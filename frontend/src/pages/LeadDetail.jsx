@@ -8,6 +8,7 @@ import { dateTime, relativeTime } from '@/lib/format';
 import { Tabs, TabContent, TabList, TabTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { StageChip } from '@/components/common/StageChip';
+import { Avatar } from '@/components/common/Avatar';
 import { ContextFollowUpCard } from '@/components/followups/ContextFollowUpCard';
 import { EmptyState, ErrorState } from '@/components/common/EmptyState';
 import { ActivityDialog, FollowUpDialog, LeadFormDialog } from '@/components/common/RecordDialogs';
@@ -38,9 +39,12 @@ export default function LeadDetail() {
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h1 className="text-lg font-semibold tracking-heading">{lead.name}</h1>
-          <p className="mt-1 text-sm text-muted">{lead.company || 'No company'} · {lead.source}</p>
+        <div className="flex items-start gap-3">
+          <Avatar name={lead.name} size={48} />
+          <div>
+            <h1 className="text-lg font-semibold tracking-heading">{lead.name}</h1>
+            <p className="mt-1 text-sm text-muted">{lead.company || 'No company'} · {lead.source}</p>
+          </div>
         </div>
         <div className="flex gap-2">
           <Button variant="secondary" onClick={() => setActivity(true)}>Log activity</Button>
@@ -106,12 +110,12 @@ export default function LeadDetail() {
                 </li>
               ))}
             </ol>
-          ) : <EmptyState title="No interactions yet" description="Log the first call, meeting, email, or note." />}
+          ) : <EmptyState scene="activity" title="No interactions yet" description="Log the first call, meeting, email, or note." />}
         </TabContent>
         <TabContent value="followups" className="space-y-3">
           {lead.followUps?.length ? lead.followUps.map((item) => (
             <ContextFollowUpCard key={item._id} item={item} onComplete={(followUp) => complete.mutate(followUp._id)} onLog={() => setActivity(true)} />
-          )) : <EmptyState title="No follow-ups yet" description="Schedule the next action for this lead." />}
+          )) : <EmptyState scene="followups" title="No follow-ups yet" description="Schedule the next action for this lead." />}
         </TabContent>
       </Tabs>
       <LeadFormDialog open={edit} onOpenChange={setEdit} lead={lead} />

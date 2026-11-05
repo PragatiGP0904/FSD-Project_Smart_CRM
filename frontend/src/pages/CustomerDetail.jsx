@@ -7,6 +7,7 @@ import { useCompleteFollowUp } from '@/hooks/useCrm';
 import { currency, relativeTime } from '@/lib/format';
 import { Button } from '@/components/ui/button';
 import { StageChip } from '@/components/common/StageChip';
+import { Avatar } from '@/components/common/Avatar';
 import { ContextFollowUpCard } from '@/components/followups/ContextFollowUpCard';
 import { EmptyState, ErrorState } from '@/components/common/EmptyState';
 import { TableSkeleton } from '@/components/ui/skeleton';
@@ -37,9 +38,12 @@ export default function CustomerDetail() {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h1 className="text-lg font-semibold tracking-heading">{customer.name}</h1>
-          <p className="mt-1 text-sm text-muted">{customer.company || 'No company'} · {customer.status}</p>
+        <div className="flex items-start gap-3">
+          <Avatar name={customer.name} size={48} />
+          <div>
+            <h1 className="text-lg font-semibold tracking-heading">{customer.name}</h1>
+            <p className="mt-1 text-sm text-muted">{customer.company || 'No company'} · {customer.status}</p>
+          </div>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button variant="secondary" onClick={() => setActivity(true)}>Log activity</Button>
@@ -70,7 +74,7 @@ export default function CustomerDetail() {
               </li>
             ))}
           </ul>
-        ) : <EmptyState title="No opportunities yet" description="Add a deal when there is a value attached to this relationship." />}
+        ) : <EmptyState scene="pipeline" title="No opportunities yet" description="Add a deal when there is a value attached to this relationship." />}
       </section>
       <section>
         <h2 className="mb-2 text-sm font-semibold">Activity</h2>
@@ -83,7 +87,7 @@ export default function CustomerDetail() {
               </li>
             ))}
           </ol>
-        ) : <EmptyState title="No interactions yet" description="Log a call to start the history." />}
+        ) : <EmptyState scene="activity" title="No interactions yet" description="Log a call to start the history." />}
       </section>
       <section className="space-y-3">
         <h2 className="text-sm font-semibold">Follow-ups</h2>

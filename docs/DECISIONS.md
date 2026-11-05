@@ -49,3 +49,7 @@ The build specification is the technical source of truth. The academic report su
 - New opportunities default to stage `New Lead`, probability 10, unless the client sends those fields.
 - Search text is trimmed, length-limited, and escaped before it is used in a regular expression.
 - Registering with a `role` field returns 400. The stored role is always `salesperson`.
+
+## Visual identity
+
+The first palette followed the specification’s blue and the stage colours green, amber, and red. That combination read as traffic lights on the cards. The working interface now uses a warm paper background, a deep green-ink primary, and muted stage tints. Overdue follow-ups are labelled in text. They no longer carry a red rail. Portraits on people and follow-up cards are generated illustrations, not photographs. The mark is two figures joined by a short line, the relationship the product is about.

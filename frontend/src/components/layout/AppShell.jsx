@@ -47,7 +47,7 @@ export function AppShell() {
       <div className="fixed inset-y-0 left-0 z-30 hidden border-r border-line md:block">
         <Sidebar collapsed={collapsed} onToggle={() => setCollapsed((value) => !value)} />
       </div>
-      <Sheet open={mobileOpen} onOpenChange={setMobileOpen} title="Smart CRM" className="md:hidden">
+      <Sheet open={mobileOpen} onOpenChange={setMobileOpen} title="Smart CRM" titleHidden className="md:hidden">
         <Sidebar mobile onNavigate={() => setMobileOpen(false)} />
       </Sheet>
       <div className={collapsed ? 'md:pl-16' : 'md:pl-60'}>

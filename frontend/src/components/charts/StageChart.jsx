@@ -6,7 +6,7 @@ export function StageChart({ distribution }) {
   const data = STAGES.map((stage) => ({ stage, count: distribution?.[stage] || 0 }));
   const total = data.reduce((sum, item) => sum + item.count, 0);
   if (!total) {
-    return <EmptyState title="No leads in the pipeline yet" description="Add a lead to see how work is spread across stages." />;
+    return <EmptyState scene="chart" compact title="No leads in the pipeline yet" description="Add a lead to see how work is spread across stages." />;
   }
   return (
     <div className="h-64">

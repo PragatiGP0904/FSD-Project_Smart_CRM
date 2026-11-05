@@ -10,6 +10,7 @@ import { ALLOWED_TRANSITIONS, STAGES } from '@/lib/constants';
 import { currency, daysInStage } from '@/lib/format';
 import { useDocumentMeta } from '@/context/PageMetaContext';
 import { StageChip } from '@/components/common/StageChip';
+import { Avatar } from '@/components/common/Avatar';
 import { EmptyState, ErrorState } from '@/components/common/EmptyState';
 import { ConfirmDialog } from '@/components/common/ConfirmDialog';
 import { ActivityDialog } from '@/components/common/RecordDialogs';
@@ -24,13 +25,18 @@ function LeadCard({ lead, overlay = false }) {
     <article
       ref={overlay ? undefined : sortable.setNodeRef}
       style={style}
-      className="rounded-xl border border-line bg-surface p-3"
+      className="rounded-2xl border border-line bg-surface p-3 shadow-none transition-shadow duration-200 hover:shadow-overlay"
       {...(overlay ? {} : sortable.attributes)}
       {...(overlay ? {} : sortable.listeners)}
     >
-      <p className="text-sm font-medium">{lead.name}</p>
-      <p className="text-sm text-muted">{lead.company || 'No company'}</p>
-      <p className="mt-2 text-xs text-muted">{lead.source} · {daysInStage(lead.stageUpdatedAt)}</p>
+      <div className="flex items-center gap-2.5">
+        <Avatar name={lead.name} size={36} />
+        <div className="min-w-0">
+          <p className="truncate text-sm font-semibold">{lead.name}</p>
+          <p className="truncate text-xs text-muted">{lead.company || 'No company'}</p>
+        </div>
+      </div>
+      <p className="mt-3 text-xs text-muted">{lead.source} · {daysInStage(lead.stageUpdatedAt)}</p>
     </article>
   );
 }
@@ -131,7 +137,7 @@ export default function Pipeline() {
       </div>
       {query.isLoading ? <TableSkeleton /> : null}
       {query.isError ? <ErrorState message="The pipeline could not be loaded." onRetry={() => query.refetch()} /> : null}
-      {query.data && !leads.length ? <div className="rounded-xl border border-line bg-surface"><EmptyState title="No leads on the board" description="Add a lead and it will start in New Lead." /></div> : null}
+      {query.data && !leads.length ? <div className="rounded-xl border border-line bg-surface"><EmptyState scene="pipeline" title="No leads on the board" description="Add a lead and it will start in New Lead." /></div> : null}
       {leads.length ? (
         <DndContext sensors={sensors} collisionDetection={closestCorners} onDragStart={(event) => setActiveId(event.active.id)} onDragEnd={onDragEnd} onDragCancel={() => setActiveId(null)}>
           <div className="flex gap-3 overflow-x-auto pb-4 snap-x">

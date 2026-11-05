@@ -52,7 +52,7 @@ export default function Dashboard() {
         {cards.map((card) => {
           const trend = card.trend ? trendLabel(data.trends?.[card.trend]?.current, data.trends?.[card.trend]?.previous) : '';
           return (
-            <article key={card.key} className="rounded-xl border border-line bg-surface p-4">
+            <article key={card.key} className="rounded-2xl border border-line bg-surface p-4 transition-shadow duration-200 hover:shadow-overlay">
               <p className="text-sm text-muted">{card.label}</p>
               <p className="mt-2 text-xl font-semibold tabular tracking-heading">{data[card.key]}</p>
               {trend ? <p className="mt-2 text-xs text-muted tabular">{trend}</p> : <p className="mt-2 text-xs text-muted">From your records</p>}
@@ -80,7 +80,7 @@ export default function Dashboard() {
               ))}
             </div>
           ) : (
-            <EmptyState title="No follow-ups waiting" description="Schedule one when a conversation needs a next step." />
+            <EmptyState compact scene="followups" title="No follow-ups waiting" description="Schedule one when a conversation needs a next step." />
           )}
         </section>
         <section className="rounded-xl border border-line bg-surface p-4">
@@ -112,7 +112,7 @@ export default function Dashboard() {
               ))}
             </ol>
           ) : (
-            <EmptyState title="No activity recorded" description="Log a call or note and it will show up here." />
+            <EmptyState compact scene="activity" title="No activity recorded" description="Log a call or note and it will show up here." />
           )}
         </section>
       </div>

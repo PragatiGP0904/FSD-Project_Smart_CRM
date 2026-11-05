@@ -13,6 +13,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import api from '@/services/api';
 import { Tooltip } from '@/components/ui/tooltip';
+import { LogoLockup, LogoMark } from '@/components/brand/Logo';
 import { cn } from '@/lib/utils';
 
 const items = [
@@ -35,8 +36,7 @@ export function Sidebar({ collapsed = false, onToggle, onNavigate, mobile = fals
   return (
     <div className={cn('flex h-full flex-col bg-surface', mobile ? 'w-full' : collapsed ? 'w-16' : 'w-60')}>
       <div className={cn('flex h-14 items-center border-b border-line px-3', collapsed && !mobile ? 'justify-center' : 'gap-2')}>
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-xs font-semibold text-white">S</span>
-        {collapsed && !mobile ? null : <span className="text-sm font-semibold tracking-heading">Smart CRM</span>}
+        {collapsed && !mobile ? <LogoMark size={28} /> : <LogoLockup mark={28} />}
       </div>
       <nav aria-label="Primary" className="flex-1 space-y-1 p-2">
         {items.map((item) => {
@@ -49,7 +49,7 @@ export function Sidebar({ collapsed = false, onToggle, onNavigate, mobile = fals
               title={collapsed ? item.label : undefined}
               className={({ isActive }) =>
                 cn(
-                  'flex h-9 items-center gap-2.5 rounded-lg px-2.5 text-sm text-muted',
+                  'flex h-9 items-center gap-2.5 rounded-lg px-2.5 text-sm text-muted transition-colors duration-200',
                   collapsed && !mobile && 'justify-center px-0',
                   isActive && 'bg-primary-soft font-medium text-primary'
                 )
@@ -58,7 +58,7 @@ export function Sidebar({ collapsed = false, onToggle, onNavigate, mobile = fals
               <Icon size={20} strokeWidth={1.75} />
               {collapsed && !mobile ? null : <span className="flex-1">{item.label}</span>}
               {item.to === '/follow-ups' && overdue.data > 0 && !(collapsed && !mobile) ? (
-                <span className="tabular rounded-full bg-danger px-1.5 text-xs text-white">{overdue.data}</span>
+                <span className="tabular rounded-full bg-primary-soft px-1.5 text-xs text-primary">{overdue.data}</span>
               ) : null}
             </NavLink>
           );

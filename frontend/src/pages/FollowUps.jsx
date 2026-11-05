@@ -70,7 +70,12 @@ export default function FollowUps() {
       {query.isError ? <ErrorState message="Follow-ups could not be loaded." onRetry={() => query.refetch()} /> : null}
       {query.data && filters.view !== 'Calendar' && !list.length ? (
         <div className="rounded-xl border border-line bg-surface">
-          <EmptyState title={filters.view === 'Today' ? 'Nothing due today' : 'No follow-ups yet'} description="Schedule a follow-up when a conversation needs a next step." action={<Button onClick={() => setOpen(true)}>New follow-up</Button>} />
+          <EmptyState
+            scene={filters.status || filters.priority ? 'search' : 'followups'}
+            title={filters.view === 'Today' ? 'Nothing due today' : filters.status || filters.priority ? 'No follow-ups match' : 'No follow-ups yet'}
+            description={filters.status || filters.priority ? 'Try another status or priority.' : 'Schedule a follow-up when a conversation needs a next step.'}
+            action={filters.status || filters.priority ? null : <Button onClick={() => setOpen(true)}>New follow-up</Button>}
+          />
         </div>
       ) : null}
       {filters.view !== 'Calendar' ? (
