@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import api from '@/services/api';
+import { DEMO_SESSION_KEY, DEMO_USER } from '@/services/demoApi';
 
 const AuthContext = createContext(null);
 
@@ -8,6 +9,11 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (localStorage.getItem(DEMO_SESSION_KEY) === 'true') {
+      setUser(DEMO_USER);
+      setLoading(false);
+      return;
+    }
     const token = localStorage.getItem('crm_token');
     if (!token) {
       setLoading(false);
@@ -31,6 +37,12 @@ export function AuthProvider({ children }) {
       loading,
       setUser,
       async login(email, password) {
+        if (email.toLowerCase() === DEMO_USER.email && password === 'Demo@123') {
+          localStorage.removeItem('crm_token');
+          localStorage.setItem(DEMO_SESSION_KEY, 'true');
+          setUser(DEMO_USER);
+          return DEMO_USER;
+        }
         const { data } = await api.post('/auth/login', { email, password });
         persist(data);
         return data.user;
@@ -42,6 +54,7 @@ export function AuthProvider({ children }) {
       },
       logout() {
         localStorage.removeItem('crm_token');
+        localStorage.removeItem(DEMO_SESSION_KEY);
         setUser(null);
       },
     };

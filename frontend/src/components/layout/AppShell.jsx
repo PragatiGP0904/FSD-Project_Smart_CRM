@@ -10,6 +10,7 @@ import { useAuth } from '@/context/AuthContext';
 import { usePageMeta } from '@/context/PageMetaContext';
 import { useTheme } from '@/context/ThemeContext';
 import { LeadFormDialog, FollowUpDialog } from '@/components/common/RecordDialogs';
+import { isDemoSession } from '@/services/demoApi';
 
 export function AppShell() {
   const { user, logout } = useAuth();
@@ -105,6 +106,11 @@ export function AppShell() {
             </MenuItem>
           </UserMenu>
         </header>
+        {isDemoSession() ? (
+          <div className="border-b border-primary/20 bg-primary-soft px-4 py-2 text-center text-sm text-primary md:px-6" role="status">
+            Sample demo: example CRM data only. Changes are not saved.
+          </div>
+        ) : null}
         <main id="main" className="mx-auto w-full max-w-page px-4 py-6 md:px-6">
           <Outlet />
         </main>

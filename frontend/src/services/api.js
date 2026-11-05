@@ -1,7 +1,11 @@
-import axios from 'axios';
+import axios, { getAdapter } from 'axios';
+import { createDemoResponse, isDemoSession } from '@/services/demoApi';
 
+export const isLiveApiConfigured = Boolean(import.meta.env.VITE_API_URL);
+const browserAdapter = getAdapter(axios.defaults.adapter);
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  adapter: (config) => (isDemoSession() ? createDemoResponse(config) : browserAdapter(config)),
 });
 
 api.interceptors.request.use((config) => {

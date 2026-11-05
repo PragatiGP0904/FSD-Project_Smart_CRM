@@ -6,7 +6,7 @@ import { SignInStory } from '@/components/brand/SignInStory';
 import { Button } from '@/components/ui/button';
 import { Field, Input } from '@/components/ui/input';
 import { useAuth } from '@/context/AuthContext';
-import { getErrorMessage } from '@/services/api';
+import { getErrorMessage, isLiveApiConfigured } from '@/services/api';
 
 export function AuthLayout({ title, subtitle, children, footer }) {
   return (
@@ -63,6 +63,10 @@ export default function Login() {
     }
     setLoading(true);
     try {
+      if (!isLiveApiConfigured && !(email.trim().toLowerCase() === 'demo@smartcrm.com' && password === 'Demo@123')) {
+        setError('This public preview supports the sample demo only. Use the demo button to explore it.');
+        return;
+      }
       await login(email.trim(), password);
       navigate('/dashboard');
     } catch (err) {
@@ -75,8 +79,8 @@ export default function Login() {
   return (
     <AuthLayout
       title="Welcome back"
-      subtitle="Sign in to open the people, conversations, and calls waiting for you."
-      footer={<>Need an account? <Link className="font-medium text-primary" to="/register">Create one</Link></>}
+      subtitle={isLiveApiConfigured ? 'Sign in to open the people, conversations, and calls waiting for you.' : 'Explore the sample workspace instantly. No email or account is required.'}
+      footer={isLiveApiConfigured ? <>Need an account? <Link className="font-medium text-primary" to="/register">Create one</Link></> : 'Public sample preview · changes are not saved'}
     >
       <form className="space-y-4" onSubmit={submit}>
         <Field label="Email" htmlFor="email">
@@ -87,7 +91,7 @@ export default function Login() {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             className="h-11"
-            placeholder="you@studio.com"
+            placeholder={isLiveApiConfigured ? 'you@studio.com' : 'demo@smartcrm.com'}
           />
         </Field>
         <PasswordField id="password" value={password} onChange={(event) => setPassword(event.target.value)} />
@@ -96,12 +100,22 @@ export default function Login() {
         <Button
           className="h-11 w-full"
           variant="secondary"
-          onClick={() => {
-            setEmail('demo@smartcrm.com');
-            setPassword('Demo@123');
+          type="button"
+          disabled={loading}
+          onClick={async () => {
+            setError('');
+            setLoading(true);
+            try {
+              await login('demo@smartcrm.com', 'Demo@123');
+              navigate('/dashboard');
+            } catch (err) {
+              setError(getErrorMessage(err, 'The sample demo could not be opened.'));
+            } finally {
+              setLoading(false);
+            }
           }}
         >
-          Use demo account
+          {loading ? 'Opening demo' : 'Explore sample demo'}
         </Button>
       </form>
     </AuthLayout>

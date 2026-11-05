@@ -4,7 +4,7 @@ import { AuthLayout, PasswordField } from '@/pages/Login';
 import { Button } from '@/components/ui/button';
 import { Field, Input } from '@/components/ui/input';
 import { useAuth } from '@/context/AuthContext';
-import { getErrorMessage } from '@/services/api';
+import { getErrorMessage, isLiveApiConfigured } from '@/services/api';
 
 export default function Register() {
   const { register } = useAuth();
@@ -14,6 +14,20 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  if (!isLiveApiConfigured) {
+    return (
+      <AuthLayout
+        title="Sample preview"
+        subtitle="Account creation is unavailable in this frontend-only demo."
+        footer={<Link className="text-primary" to="/login">Back to sign in</Link>}
+      >
+        <p className="rounded-lg border border-line bg-background px-3 py-2 text-sm text-muted">
+          The public preview uses example data and does not create accounts or save changes.
+        </p>
+      </AuthLayout>
+    );
+  }
 
   const submit = async (event) => {
     event.preventDefault();

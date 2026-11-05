@@ -60,7 +60,9 @@ That process seeds the demo account and listens on port 5000. It is only for loc
 
 ### Demo account
 
-After seeding:
+The public Vercel preview provides a sample-only demo. Choose **Explore sample demo** on the sign-in page; no email is sent and no account is needed. The sample data is read-only and changes are not saved.
+
+For a locally seeded full-stack database:
 
 - Email: `demo@smartcrm.com`
 - Password: `Demo@123`
