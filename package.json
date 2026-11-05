@@ -1,0 +1,22 @@
+{
+  "name": "smart-crm",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Smart CRM — context-aware customer relationship management for small businesses",
+  "author": "Pragati GP",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,green \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "seed": "npm run seed --prefix backend",
+    "test": "node scripts/run-tests.js",
+    "lint": "npm run lint --prefix backend && npm run lint --prefix frontend",
+    "build": "npm run build --prefix frontend",
+    "start": "npm run start --prefix backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
